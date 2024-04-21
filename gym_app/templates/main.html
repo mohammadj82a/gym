@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    integrity="sha512-G7VpMvI8Tm9/3HztG6Hn12dsZvGE5b8RXk7rbTp0l4fUQ7bEiJ52omIKlPFV9sWSb8QOe9voS5FR4uV1dUDssw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <title>Oxygen gym</title>
+  </head>
+
+<style>
+  /* Custom CSS for Footer */
+   footer {
+    background-color: #212529;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+/*  
+  footer .text-reset {
+    color: white !important;
+  }
+  footer .fab {
+    color: white;
+  } */
+  .status-box {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border: 1px solid #000;
+  }
+
+  .green {
+    background-color: green;
+  }
+
+  .red {
+    background-color: red;
+  }
+</style>
+
+<body>
+
+  
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="mr-auto">
+        <a href="{% url 'gymodel-create' %}" class="btn btn-primary btn-lg">ثبت کاربر جدید</a>
+    </div>
+
+    <div class="d-flex align-items-center flex-row-reverse">
+      <form class="form-inline my-2 my-lg-0 mr-3" action="{% url 'search_view' %}" method="GET">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search_text">
+        {% csrf_token %}
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    
+        <a class="navbar-brand" href="{% url 'main' %}">خانه</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav mr-3"> 
+                <a class="nav-item nav-link active mr-3" href="{% url 'status' %}">لیست عضوهای فاقد اشتراک <span class="sr-only">(current)</span></a>
+
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+  </div>
+  </div>
+  </nav>
+
+  <br />
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-3 mb-4">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title">تعداد همه اعضاء</h5>
+            <h4>
+              <p class="card-text">{{ total_models }}</p>
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title"> ثبت نامی ها در ماه قبل</h5>
+            <h4>
+              <p class="card-text">{{ time_last_month }}</p>
+            </h4>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title">عضو های دارای اشتراک</h5>
+            <h4>
+              <p class="card-text">{{ total_models_true }}</p>
+            </h4>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title">عضو های فاقد اشتراک</h5>
+            <h4>
+              <p class="card-text">{{ total_models_false }}</p>
+            </h4>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <br />
+
+  <div style="margin-left: 50px; margin-right: 280px; position: relative;">
+    <div style="position: absolute; top: 0; right: -250px; width: 220px;">
+      <!-- <a href="{% url 'gymodel-create' %}" class="btn btn-primary btn-block">ثبت کاربر جدید</a> -->
+      <div style="background-color: #f2f2f2; padding: 10px;">
+
+        <h4 style="margin-right: 20px;">فیلتر ها</h4>
+        <ul style="margin-right: 20px; list-style-type: none; padding: 0;">
+          <ul class="list-unstyled">
+            <li><a href="?status_filter=all">همه</a></li>
+            <li><a href="?status_filter=true">دارای اشتراک</a></li>
+            <li><a href="?status_filter=false">  فاقد اشتراک</a></li>
+            <h4 class="card-title">زمان</h4>
+            <li><a href="?status_filter=today">امروز</a></li>
+            <li><a href="?status_filter=last_week">هفته گذشته</a></li>
+            <li><a href="?status_filter=last_month">ماه گذشته</a></li>
+            <li><a href="?status_filter=last_year">سال گذشته</a></li>
+          </ul>
+        </ul>
+      </div>
+    </div>
+
+
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">نام و نام خانوادگی</th>
+          <th scope="col">BMI</th>
+          <th scope="col">تاریخ شروع</th>
+          <th scope="col">تاریخ پایان</th>
+          <th scope="col">وضعیت</th>
+          <th scope="col"></th>
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in posts %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td><a href="{% url 'gymodel-detail' item.pk %}">{{ item.name }}</a></td>
+          <td>{{ item.bmi }}</td>
+          <td>{{ item.start_date }}</td>
+          <td>{{ item.end_date }}</td>
+          <td>
+            {% if item.status %}
+            <div class="status-box green"></div>
+            {% else %}
+            <div class="status-box red"></div>
+            {% endif %}
+          <td><a href="{% url 'gymmodel-delete' pk=item.id %}">
+              <h5>delete</h5>
+            </a></td>
+          </td>
+        </tr>
+        {% endfor %}
+
+
+      </tbody>
+    </table>
+
+  </div>
+
+  <br />
+  <br />
+
+  <br />
+  <br />
+  <br />
+  <br />
+    
+  <script>$(document).ready(function() {
+    // تابعی برای ارسال درخواست به مسیر reload و ریلود صفحه
+    function reloadModels() {
+        $.ajax({
+            url: '/reload/',  // مسیر ویو reload_models
+            method: 'GET',
+            success: function(response) {
+                console.log(response);  // نمایش پاسخ در کنسول
+                location.reload();      // ریلود صفحه
+            },
+            error: function(xhr, status, error) {
+                console.error(error);   // نمایش خطا در کنسول
+            }
+        });
+    }
+
+    // زمانی که صفحه بارگذاری شده باشد، تابع reloadModels فراخوانی می‌شود
+    reloadModels();
+});
+</script>
+
+  <footer class="bg-dark text-white">
+ 
+    <div class="text-center p-3" style="background-color: rgba(255, 255, 255, 0.05);">
+      © 2020 Copyright:
+      <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+    </div>
+
+  </footer>
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
